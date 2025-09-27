@@ -110,6 +110,9 @@ Report_Monthdf = []
 
 # Specify Chrome user for VM scraping
 CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
+# You main need to specify where the binary is
+## --- Define the ABSOLUTE PATH to the Chrome binary ---
+CHROME_BINARY_PATH = "/opt/google/chrome/chrome" 
 # Open the Chrome Webdriver by specifying the path
 chrome_options = webdriver.ChromeOptions()
 
@@ -119,8 +122,8 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument(f"--user-data-dir={CHROME_PROFILE_PATH}")
 # chrome_options.add_argument("profile-directory=Default") # Optional if using parent folder
 
-# You main need to specify where the binary is
-chrome_options.binary_location = "/usr/bin/google-chrome"
+chrome_options.binary_location = CHROME_BINARY_PATH
+# chrome_options.binary_location = "/usr/bin/google-chrome"
 # Since this is a startup script, always run headless and add necessary flags
 # Add the essential headless arguments:
 chrome_options.add_argument("--headless=new") # Modern headless mode
