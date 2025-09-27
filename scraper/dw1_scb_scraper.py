@@ -122,7 +122,7 @@ CHROME_BINARY_PATH = "/opt/google/chrome/chrome"
 CHROME_DRIVER_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.7258.154/chromedriver"
 # NOTE: Replace '139.0.7258.154' with your actual version!
 
-# 2. Instantiate the Service object
+# 2. Instantiate the Service object ONCE
 service = Service(executable_path=CHROME_DRIVER_PATH)
 
 chrome_options = webdriver.ChromeOptions()
@@ -139,10 +139,7 @@ chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--window-size=1920,1080")
 chrome_options.add_argument("--remote-debugging-port=9222") 
 chrome_options.add_argument("--disable-setuid-sandbox")
-# 3. Modify the driver instantiation to use the Service object
-# 1. Instantiate the Service (CRITICAL: Use the explicit path found in your cache)
-CHROME_DRIVER_CACHE_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.7258.154/chromedriver"
-service = Service(executable_path=CHROME_DRIVER_CACHE_PATH)
+
 driver = webdriver.Chrome(service=service, options=chrome_options) # <-- USE THIS LINE
 # Go to the SCB Distributors login page
 driver.get('https://scbdistributors.com/cgi-bin/links/user.cgi')
