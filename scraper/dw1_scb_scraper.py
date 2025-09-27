@@ -107,7 +107,12 @@ Report_Yeardf = []
 Report_Monthdf = []
 
 #open Chrome
-
+# FIX: Use a temporary, unique directory for the profile
+# This directory will be created fresh every time the script runs (in /tmp/ which is cleared on reboot)
+# The systemd service running as 'peter_gs' will have permission to write here.
+# Change the old line: CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
+# to a new temporary one:
+CHROME_TEMP_DATA_DIR = '/tmp/selenium-scb-profile'
 # Specify Chrome user for VM scraping
 CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
 # You main need to specify where the binary is
@@ -119,7 +124,7 @@ chrome_options = webdriver.ChromeOptions()
 # Add the argument to tell Chrome which profile/user data directory to use
 # The 'Profile 1' part is optional if you just need the default
 # Comment this out for local scraping!
-chrome_options.add_argument(f"--user-data-dir={CHROME_PROFILE_PATH}")
+chrome_options.add_argument(f"--user-data-dir={CHROME_TEMP_DATA_DIR}") 
 # chrome_options.add_argument("profile-directory=Default") # Optional if using parent folder
 
 chrome_options.binary_location = CHROME_BINARY_PATH
