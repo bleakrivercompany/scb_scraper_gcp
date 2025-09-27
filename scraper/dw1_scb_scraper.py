@@ -119,10 +119,19 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument(f"--user-data-dir={CHROME_PROFILE_PATH}")
 # chrome_options.add_argument("profile-directory=Default") # Optional if using parent folder
 
+# You main need to specify where the binary is
+chrome_options.binary_location = "/usr/bin/google-chrome"
 # Since this is a startup script, always run headless and add necessary flags
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox") 
-chrome_options.add_argument("--disable-dev-shm-usage") 
+# Add the essential headless arguments:
+chrome_options.add_argument("--headless=new") # Modern headless mode
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--window-size=1920,1080") # Set a proper viewport size
+
+# The DevToolsActivePort error is often solved by one of these
+chrome_options.add_argument("--remote-debugging-port=9222") # Specify a port
+chrome_options.add_argument("--disable-setuid-sandbox") # Security bypass for sandbox issues
 # driver = webdriver.Chrome(executable_path=r"C:\webdriver\chromedriver.exe",options=chrome_options)
 driver = webdriver.Chrome(options=chrome_options)
 # Go to the SCB Distributors login page
