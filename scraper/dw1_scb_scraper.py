@@ -114,8 +114,6 @@ Report_Monthdf = []
 # Change the old line: CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
 # to a new temporary one:
 CHROME_TEMP_DATA_DIR = '/tmp/selenium-scb-profile'
-# Specify Chrome user for VM scraping
-CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
 # You main need to specify where the binary is
 ## --- Define the ABSOLUTE PATH to the Chrome binary ---
 CHROME_BINARY_PATH = "/opt/google/chrome/chrome" 
@@ -128,28 +126,23 @@ CHROME_DRIVER_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.
 service = Service(executable_path=CHROME_DRIVER_PATH)
 
 chrome_options = webdriver.ChromeOptions()
-# Add the essential headless arguments:
-chrome_options.add_argument("--headless=new") # Modern headless mode
 
-# Add the argument to tell Chrome which profile/user data directory to use
-# The 'Profile 1' part is optional if you just need the default
-# Comment this out for local scraping!
-chrome_options.add_argument(f"--user-data-dir={CHROME_TEMP_DATA_DIR}") 
-# chrome_options.add_argument("profile-directory=Default") # Optional if using parent folder
-
+# CRITICAL OPTIONS FOR STABILITY
 chrome_options.binary_location = CHROME_BINARY_PATH
-# chrome_options.binary_location = "/usr/bin/google-chrome"
-# Since this is a startup script, always run headless and add necessary flags
+chrome_options.add_argument("--headless=new") 
+chrome_options.add_argument(f"--user-data-dir={CHROME_TEMP_DATA_DIR}") 
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("--window-size=1920,1080") # Set a proper viewport size
 
-# The DevToolsActivePort error is often solved by one of these
-chrome_options.add_argument("--remote-debugging-port=9222") # Specify a port
-chrome_options.add_argument("--disable-setuid-sandbox") # Security bypass for sandbox issues
+# SECONDARY STABILITY OPTIONS
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--window-size=1920,1080")
+chrome_options.add_argument("--remote-debugging-port=9222") 
+chrome_options.add_argument("--disable-setuid-sandbox")
 # 3. Modify the driver instantiation to use the Service object
-# driver = webdriver.Chrome(options=chrome_options) # <-- DELETE or COMMENT OUT THIS LINE
+# 1. Instantiate the Service (CRITICAL: Use the explicit path found in your cache)
+CHROME_DRIVER_CACHE_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.7258.154/chromedriver"
+service = Service(executable_path=CHROME_DRIVER_CACHE_PATH)
 driver = webdriver.Chrome(service=service, options=chrome_options) # <-- USE THIS LINE
 # Go to the SCB Distributors login page
 driver.get('https://scbdistributors.com/cgi-bin/links/user.cgi')
