@@ -108,9 +108,21 @@ Report_Monthdf = []
 
 #open Chrome
 
+# Specify Chrome user for VM scraping
+CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
 # Open the Chrome Webdriver by specifying the path
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('headless')
+
+# Add the argument to tell Chrome which profile/user data directory to use
+# The 'Profile 1' part is optional if you just need the default
+# Comment this out for local scraping!
+chrome_options.add_argument(f"--user-data-dir={CHROME_PROFILE_PATH}")
+# chrome_options.add_argument("profile-directory=Default") # Optional if using parent folder
+
+# Since this is a startup script, always run headless and add necessary flags
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox") 
+chrome_options.add_argument("--disable-dev-shm-usage") 
 # driver = webdriver.Chrome(executable_path=r"C:\webdriver\chromedriver.exe",options=chrome_options)
 driver = webdriver.Chrome(options=chrome_options)
 # Go to the SCB Distributors login page
