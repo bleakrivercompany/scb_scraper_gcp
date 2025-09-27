@@ -14,6 +14,7 @@ New function, save_buckets takes three, specifying the df first
 """
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -119,6 +120,13 @@ CHROME_PROFILE_PATH = '/home/peter_gs/.config/google-chrome/'
 ## --- Define the ABSOLUTE PATH to the Chrome binary ---
 CHROME_BINARY_PATH = "/opt/google/chrome/chrome" 
 # Open the Chrome Webdriver by specifying the path
+# 1. Define the ABSOLUTE path to the ChromeDriver executable
+CHROME_DRIVER_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.7258.154/chromedriver"
+# NOTE: Replace '139.0.7258.154' with your actual version!
+
+# 2. Instantiate the Service object
+service = Service(executable_path=CHROME_DRIVER_PATH)
+
 chrome_options = webdriver.ChromeOptions()
 
 # Add the argument to tell Chrome which profile/user data directory to use
@@ -140,8 +148,9 @@ chrome_options.add_argument("--window-size=1920,1080") # Set a proper viewport s
 # The DevToolsActivePort error is often solved by one of these
 chrome_options.add_argument("--remote-debugging-port=9222") # Specify a port
 chrome_options.add_argument("--disable-setuid-sandbox") # Security bypass for sandbox issues
-# driver = webdriver.Chrome(executable_path=r"C:\webdriver\chromedriver.exe",options=chrome_options)
-driver = webdriver.Chrome(options=chrome_options)
+# 3. Modify the driver instantiation to use the Service object
+# driver = webdriver.Chrome(options=chrome_options) # <-- DELETE or COMMENT OUT THIS LINE
+driver = webdriver.Chrome(service=service, options=chrome_options) # <-- USE THIS LINE
 # Go to the SCB Distributors login page
 driver.get('https://scbdistributors.com/cgi-bin/links/user.cgi')
 
