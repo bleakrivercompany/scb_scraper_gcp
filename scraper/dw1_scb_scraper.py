@@ -128,6 +128,8 @@ CHROME_DRIVER_PATH = "/home/peter_gs/.cache/selenium/chromedriver/linux64/139.0.
 service = Service(executable_path=CHROME_DRIVER_PATH)
 
 chrome_options = webdriver.ChromeOptions()
+# Add the essential headless arguments:
+chrome_options.add_argument("--headless=new") # Modern headless mode
 
 # Add the argument to tell Chrome which profile/user data directory to use
 # The 'Profile 1' part is optional if you just need the default
@@ -138,8 +140,6 @@ chrome_options.add_argument(f"--user-data-dir={CHROME_TEMP_DATA_DIR}")
 chrome_options.binary_location = CHROME_BINARY_PATH
 # chrome_options.binary_location = "/usr/bin/google-chrome"
 # Since this is a startup script, always run headless and add necessary flags
-# Add the essential headless arguments:
-chrome_options.add_argument("--headless=new") # Modern headless mode
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--disable-gpu")
